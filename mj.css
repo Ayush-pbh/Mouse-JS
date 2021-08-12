@@ -5,6 +5,7 @@ body{
     margin:0;
     height:100vh;
     width:100%;
+    z-index: -1;
 }
 div.default-mouse-js-property-for-div{
     position: fixed;
@@ -15,13 +16,43 @@ div.default-mouse-js-property-for-div{
     /* border: none; */
     background: coral;
     pointer-events: none;
-    
+    z-index: 1;
+    /* transition: background-color .3s ease;     */
     /* transform: translate(); */
 }
 
 div.default-mouse-js-property-for-div.dmaj{
-    transition: transform .2s ease;
+    transition: transform .2s ease, background-color .3s ease, border-color .3s ease;
 }
 div.default-mouse-js-property-for-div.dmin{
-    transition: transform .1s ease;
+    transition: transform .1s ease, background-color .3s ease, border-color .3s ease;
+}
+
+
+.img-fixed-size{
+    width: 200px;
+    height: auto;
+}
+
+
+/* PAGE SPECIFIC DESIGN */
+
+section.def-sec{
+    height:100vh;
+    width:100vw;
+}
+.a, .c, .e{
+    background: #111;
+}
+.b, .d{
+    background: turquoise;
+}
+
+.head-test{
+    font-size: 2em;
+    font-family: 'Playfair Display';
+    font-weight: lighter;
+    margin:0px;
+    padding:0;
+    z-index: 2;
 }

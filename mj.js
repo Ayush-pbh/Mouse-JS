@@ -12,6 +12,10 @@ class MJ {
         this.dmaj.classList.add('dmaj');
         this.dmin.classList.add('default-mouse-js-property-for-div');    
         this.dmin.classList.add('dmin');    
+        // this.imgT = document.createElement('img');
+        // this.imgT.classList.add('img-fixed-size');
+        // this.imgT.src='https://cdn.pixabay.com/photo/2018/01/15/07/52/woman-3083402__340.jpg';
+        // this.dmaj.appendChild(this.imgT);
         this.config = {
             'visibility' : {
                 'dmaj':true,
@@ -53,6 +57,10 @@ class MJ {
                 'dmin':{
                     'background':'#111'
                 }
+            },
+            'backdropfilter':{
+                'dmaj':'none',
+                'dmin':'none'
             }
 
         }
@@ -72,12 +80,20 @@ class MJ {
             this.dmin.style.transform = 'translate('+(e.clientX - this.config['dimension']['dmin']['width']/2) + 'px'+','+(e.clientY - this.config['dimension']['dmin']['height']/2) + 'px'+')';
         }
     }
+    // changeImagetSrc(param){
+    //     this.imgT.src=param;
+    // }
     reviseConfig() {
         //this method sets value of css properties.
         this.revVisibility();    //revise all
         this.revDimension();
         this.revBorder();
         this.revBackground();
+        this.revBackdropfilter();
+    }
+
+    revBackdropfilter(){
+        
     }
 
     revVisibility(elem=-1){
@@ -102,7 +118,6 @@ class MJ {
                 break;
         }
     }
-
     revDimension(elem=-1){
         let val= this.config['dimension'];
         switch(elem){
@@ -188,14 +203,40 @@ class MJ {
                 break;
         }
     }
+
+    //End User usable functions >>>
+    changeOverallColorTo(param){
+    
+        this.changeDMAJBorderColor(param);
+        this.changeDMINJBackgroundColor(param);
+
+        m.revBackground();
+        m.revBorder();
+    }
+    //colors
+    changeDMAJBackgroundColor = (param) => {m.config['color']['dmaj']['background'] = param;};
+    changeDMAJBorderColor = (param) => {m.config['border']['dmaj']['color'] = param;};
+    changeDMINJBackgroundColor = (param) => {m.config['color']['dmin']['background'] = param;};
+    changeDMINBorderColor = (param) => {m.config['border']['dmin']['color'] = param;};
+
+    //dimesions
+    changeDMAJDimensions(height,width=-1){
+        // if either of height or width is -1 that means no change is to updated on that property
+        if(!height==-1){
+            
+        }
+    }
 }
 
 // let m;
-window.addEventListener('load',function(e){
-    var m = new MJ();
+// window.addEventListener('load',function(e){
+     
+// });
+
+var m = new MJ();
     window.addEventListener('mousemove',function(e){
         // e.clientX, e.clientY
         m.moveThem(e);
         
-    });
-});
+    }
+);   
