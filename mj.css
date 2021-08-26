@@ -7,7 +7,7 @@ body{
     width:100%;
     z-index: -1;
 }
-div.default-mouse-js-property-for-div{
+div.default-mouse-js-property-for-follow-classic{
     position: fixed;
     top:0px;
     left:0px;
@@ -21,11 +21,11 @@ div.default-mouse-js-property-for-div{
     /* transform: translate(); */
 }
 
-div.default-mouse-js-property-for-div.dmaj{
-    transition: transform .2s ease, background-color .3s ease, border-color .3s ease;
+div.default-mouse-js-property-for-follow-classic.dmaj{
+    transition: transform .2s ease, background-color .3s ease, border-color .3s ease,height .5s ease, width .5s ease;
 }
-div.default-mouse-js-property-for-div.dmin{
-    transition: transform .1s ease, background-color .3s ease, border-color .3s ease;
+div.default-mouse-js-property-for-follow-classic.dmin{
+    transition: transform .1s ease, background-color .3s ease, border-color .3s ease, height .5s ease, width .5s ease;
 }
 
 
@@ -37,19 +37,27 @@ div.default-mouse-js-property-for-div.dmin{
 
 /* PAGE SPECIFIC DESIGN */
 
-section.def-sec{
-    height:100vh;
-    width:100vw;
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: #2196F3;
+    padding: 10px;
+    height: calc(100vh - 20px);
+    width: calc(100vw - 20px);
 }
-.a, .c, .e{
-    background: #111;
-}
-.b, .d{
-    background: turquoise;
+
+
+
+div.def-sec{
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
 }
 
 .head-test{
-    font-size: 2em;
+    font-size: 5em;
     font-family: 'Playfair Display';
     font-weight: lighter;
     margin:0px;
