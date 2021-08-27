@@ -22,16 +22,31 @@ div.default-mouse-js-property-for-follow-classic{
 }
 
 div.default-mouse-js-property-for-follow-classic.dmaj{
-    transition: transform .2s ease, background-color .3s ease, border-color .3s ease,height .5s ease, width .5s ease;
+    transition: transform .2s ease, background-color .3s ease, border-color .3s ease,height .5s ease, width .5s ease, opacity .5s ease;
 }
 div.default-mouse-js-property-for-follow-classic.dmin{
-    transition: transform .1s ease, background-color .3s ease, border-color .3s ease, height .5s ease, width .5s ease;
+    transition: transform .1s ease, background-color .3s ease, border-color .3s ease, height .5s ease, width .5s ease, opacity .5s ease;
 }
 
 
 .img-fixed-size{
     width: 200px;
     height: auto;
+}
+
+.mj-fade-out{
+    transition: opacity 1s ease;
+    opacity:0 !important;
+}
+
+/* IMAGE */
+.mj-img{
+    max-height: 300px;
+    max-width: 300px;
+    position: fixed;
+    top:0px;
+    left:0px;
+    transition: transform .1s ease, background-color .3s ease, border-color .3s ease, height .5s ease, width .5s ease, opacity .5s ease;
 }
 
 
@@ -43,7 +58,14 @@ div.default-mouse-js-property-for-follow-classic.dmin{
 
 
 
+
+
 /* PAGE SPECIFIC DESIGN */
+
+
+.translucent{
+    opacity: .5;
+}
 
 .grid-container {
     display: grid;

@@ -3,26 +3,34 @@ class MJ{
         //first creating two div elements in the body.
         this.dmaj = document.createElement('div');   //major
         this.dmin = document.createElement('div');   //minor
+        this.img = document.createElement('img');
         //appending the Major and Minor to Body
+        this.dmaj.classList.add('dmaj');
+        this.dmin.classList.add('dmin');    
+        this.img.classList.add('mj-img');    
+        
+        
         
         this.config = {
             'follow':{
                 'status':true,
-                'type':'classic', //classic text image button
-            },
-            'animation':{
-                'status':true,
-                'events':{'hover':true,'click':true,'drag':true,},
-            },            
+                'type':{
+                    'classic':true,
+                    'image':true,
+                    'text':true,
+                } //classic text image button
+            }            
         }
-
         this.follow_classic_config = {
             'visibility' : {
                 'dmaj':true,
                 'dmin':true,
                 'cursor':true
             },
-
+            'destroyed':{
+                'dmaj':true,
+                'dmin':true
+            },
             'dimension':{
                 'dmaj':{
                     'height':100,
@@ -37,13 +45,13 @@ class MJ{
             'border' : {
                 'dmaj':{
                     'type':'solid',
-                    'width':0,
+                    'width':1,
                     'radius':50,
-                    'color':'#ccc'
+                    'color':'#000'
                 },
                 'dmin':{
                     'type':'none',
-                    'width':0,
+                    'width':2,
                     'radius':50,
                     'color':'#ccc'
 
@@ -52,10 +60,10 @@ class MJ{
 
             'color':{
                 'dmaj':{
-                    'background':'teal'
+                    'background':'transparent'
                 },
                 'dmin':{
-                    'background':'coral' 
+                    'background':'#111' 
                 }
             },
 
@@ -63,26 +71,14 @@ class MJ{
                 'dmaj':'none',
                 'dmin':'none'
             },
-            'animation':{
-                //default animations are def-(rotate, buzz)
-                'name':'def-rotate',
-                'duration':'1s',
-                'delay':'',
-                'iteration-count':'',
-                'direction':'',
-                'timing-function':'',
-                'fill-mode':''
-            }
         }
-
         this.follow_image_config = {
             'visibility' : {
-                'dmaj':true,
-                'dmin':true,
-                'cursor':true
+                'img':true,
             },
+            'destroyed':true,
             'image':{
-                'url':'',
+                'url':'images/1.jpg',
                 'max-height':500,
                 'max-width':500,
                 'border-radius':0,
@@ -121,91 +117,179 @@ class MJ{
         }
         //animation config helps binding predefined/custom animations to the desiered event.
     }
+    refreshFollow(){
+        //this fucntion refreshes the things following the cursor
+        if(this.config['follow']['type']['classic']){
+            //Agar Classic Follow Chaiye to upar wali value to true karna hoga...
 
-    default(){
-        this.dmaj.classList.add('dmaj');
-        this.dmin.classList.add('dmin');    
-        
-        document.getElementsByTagName('body')[0].appendChild(this.dmaj);
-        document.getElementsByTagName('body')[0].appendChild(this.dmin);
-        //now depending upon the main config we will find out wether user wants classic floowers or else.
-        if(this.config['follow']['status']){
-            //that means user wants divs  to follow cursor.
-            let addclasses = '';
-            switch(this.config['follow']['type']){
-                case 'classic':
-                    console.log('Classic');
-                    //adding its unique class
-                    addclasses = 'default-mouse-js-property-for-follow-classic';
-                    //calling specific funtions.
-                    this.followClassic();
-                    break;
-                case 'text':
-                    console.log('Text');
-                    break;
-                case 'button':
-                    console.log('Button');
-                    break;
-                case 'image':
-                    console.log('Image');
-                    break;
-                default:
-                    console.error(this.config['follow']['type']+' not recognised : main config follow type ivalid \n Supported types (classic, text, button, image)');                        
-            }
-            console.log(addclasses);
+            this.followClassic()
+            console.log("Follow Classic Activated")
+            let addclasses = 'default-mouse-js-property-for-follow-classic'
             this.dmaj.classList.add(addclasses);
-            this.dmin.classList.add(addclasses);    
-        
+            this.dmin.classList.add(addclasses);
+
+        }
+        if(!this.config['follow']['type']['classic']){this.revVisibility()}
+
+
+
+        if(this.config['follow']['type']['image']){
+            //Image follow karne ke liye steps
+            //1. Image Banao agar pahle se nahi hai to
+            //2. Image ki properties set karo config se dekh ke 
+            //3. Image ko moveDss se hook kar do
+
+            //1. 
+            this.followImage()
+
+
+        }
+        if(!this.config['follow']['type']['image']){}
+
+    }
+    followImage(){
+        this.revVisibilityImage();
+        this.revImageURL();
+        this.revDimensionImage();
+        this.revBorderImage();
+        console.log("Image");
+    }
+    revImageURL(){
+        this.img.src = this.follow_image_config['image']['url'];
+        console.log("Changed URL")
+    }
+    
+    revDimensionImage(){
+    }
+    revBorderImage(){}
+    revVisibilityImage(){
+        if(this.config['follow']['type']['image']){
+            //if image is dead we bring it to life again...
+            if(this.follow_image_config['destroyed']){
+                //if it is destroyed.. we relive if
+                this.make(this.img)
+                this.follow_image_config['destroyed'] = false
+            }
+            if(this.follow_image_config['visibility']['img']){
+                //since the image is alive and visible we will add it's visibility css...
+                this.img.style.display = 'block'
+                this.removeClass('mj-fade-out')
+
+            }
+            else{
+                setTimeout(0,()=>{this.img.style.display = 'none'})
+                this.addClass('mj-fade-out')
+            }
+        }
+        else if(!this.config['follow']['type']['image']){
+            //IF IMG IS alive we kill it without mercy...
+            this.destroy(this.img)
+            this.follow_image_config['destroyed'] = true
         }
     }
     //Follow Engine...
     moveDss(e){
-    // e.clientY;
-        if(this.follow_classic_config['visibility']['dmaj']){
-            let x = ((e.clientX - this.follow_classic_config['dimension']['dmaj']['width']/2) -  this.follow_classic_config['border']['dmaj']['width']) + 'px';
-            let y = ((e.clientY - this.follow_classic_config['dimension']['dmaj']['height']/2)-  this.follow_classic_config['border']['dmaj']['width']) + 'px';
-
-            this.dmaj.style.transform = 'translate('+x +','+y +')';
+        if(this.config['follow']['type']['classic']){
+            if(this.follow_classic_config['destroyed']['dmaj']){this.make(this.dmaj);this.follow_classic_config['destroyed']['dmaj']=false}
+            if(this.follow_classic_config['destroyed']['dmin']){this.make(this.dmin);this.follow_classic_config['destroyed']['dmin']=false}
+            if(this.follow_classic_config['visibility']['dmaj']){
+                let x = ((e.clientX - this.follow_classic_config['dimension']['dmaj']['width']/2) -  this.follow_classic_config['border']['dmaj']['width']) + 'px';
+                let y = ((e.clientY - this.follow_classic_config['dimension']['dmaj']['height']/2)-  this.follow_classic_config['border']['dmaj']['width']) + 'px';
+    
+                this.dmaj.style.transform = 'translate('+x +','+y +')';
+            }
+    
+            if(this.follow_classic_config['visibility']['dmin']){
+                let x = ((e.clientX - this.follow_classic_config['dimension']['dmin']['width']/2) -  this.follow_classic_config['border']['dmin']['width']) + 'px';
+                let y = ((e.clientY - this.follow_classic_config['dimension']['dmin']['height']/2) -  this.follow_classic_config['border']['dmin']['width']) + 'px';
+    
+                this.dmin.style.transform = 'translate('+x +','+y +')';
+            }
         }
 
-        if(this.follow_classic_config['visibility']['dmin']){
-            let x = ((e.clientX - this.follow_classic_config['dimension']['dmin']['width']/2) -  this.follow_classic_config['border']['dmin']['width']) + 'px';
-            let y = ((e.clientY - this.follow_classic_config['dimension']['dmin']['height']/2) -  this.follow_classic_config['border']['dmin']['width']) + 'px';
+        if(this.config['follow']['type']['image']){
+            // if(this.follow_image_config['destroyed']){this.make(this.img);this.follow_image_config['destroyed']=false}
+            if(this.follow_image_config['visibility']['img']){
+                let x = (e.clientX - (this.img.width/2))
+                let y = (e.clientY - (this.img.height/2))
 
-            this.dmin.style.transform = 'translate('+x +','+y +')';
-        }    
+                this.img.style.transform = 'translate('+x+','+y+')';
+            }
+        }
     }
-
+    addClass(name,elem='both'){
+        //this function is used to add classes to the dmaj and dmin or both.
+        //these classes can be used to do animations.
+        switch(elem){
+            case 'both':
+                this.dmaj.classList.add(name);
+                this.dmin.classList.add(name);
+                break
+            default:
+                elem.classList.add(name);
+                break
+        }
+    }
+    removeClass(name,elem='both'){
+        //this function is used to remove classes to the dmaj and dmin or both.
+        //these classes can be used to undo animations.
+        switch(elem){
+            case 'both':
+                this.dmaj.classList.remove(name);
+                this.dmin.classList.remove(name);
+                break
+            default:
+                elem.classList.remove(name)
+                break
+        }
+    }
+    //Animation Funcitons ----END---
     followClassic(){
         //this method sets value of css properties.
         this.revVisibility();    //revise all
         this.revDimension();
         this.revBorder();
         this.revBackground();
-    
     }
 
     revVisibility(elem=-1){
-        let val = this.follow_classic_config['visibility'];
-        switch (elem){
-            case 0:
-                val = val['dmaj'];
-                this.dmaj.style.display = (val)?'block':'none';
-                break;
-            case 1:
-                val = val['dmin'];
-                this.dmin.style.display = (val)?'block':'none';
-                break;
-            case 2:
-                val = val['cursor'];
-                document.getElementsByTagName('body')[0].style.cursor=val?'default':'none';
-                break;
-            case -1:
-                document.getElementsByTagName('body')[0].style.cursor=val['cursor']?'default':'none';
-                this.dmaj.style.display = (val['dmaj'])?'block':'none';
-                this.dmin.style.display = (val['dmin'])?'block':'none';
-                break;
+        if(this.config['follow']['type']['classic']){
+            let val = this.follow_classic_config['visibility'];
+            switch (elem){
+                case 0:
+                    val = val['dmaj'];
+                    this.dmaj.style.display = (val)?'block':'none';
+                    break;
+                case 1:
+                    val = val['dmin'];
+                    this.dmin.style.display = (val)?'block':'none';
+                    break;
+                case 2:
+                    val = val['cursor'];
+                    document.getElementsByTagName('body')[0].style.cursor=val?'default':'none';
+                    break;
+                case -1:
+                    document.getElementsByTagName('body')[0].style.cursor=val['cursor']?'default':'none';
+                    this.dmaj.style.display = (val['dmaj'])?'block':'none';
+                    this.dmin.style.display = (val['dmin'])?'block':'none';
+                    break;
+            }
         }
+        else if(!this.config['follow']['type']['classic']){
+            //if the user sets usage to false we are killing all the instances...
+            this.destroy(this.dmaj)
+            this.follow_classic_config['destroyed']['dmaj']=true
+            this.destroy(this.dmin)
+            this.follow_classic_config['destroyed']['dmin']=true
+        }
+    }
+    destroy(elem){
+        setTimeout(0,()=>{document.getElementsByTagName('body')[0].removeChild(elem)});
+        this.addClass('mj-fade-out')
+    }
+    make(elem){
+        document.getElementsByTagName('body')[0].appendChild(elem);
+        this.removeClass('mj-fade-out')
     }
     revDimension(elem=-1){
         let val= this.follow_classic_config['dimension'];
