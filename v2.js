@@ -37,13 +37,13 @@ class MJ{
             'border' : {
                 'dmaj':{
                     'type':'solid',
-                    'width':1,
+                    'width':0,
                     'radius':50,
                     'color':'#ccc'
                 },
                 'dmin':{
                     'type':'none',
-                    'width':2,
+                    'width':0,
                     'radius':50,
                     'color':'#ccc'
 
@@ -52,16 +52,26 @@ class MJ{
 
             'color':{
                 'dmaj':{
-                    'background':'transparent'
+                    'background':'teal'
                 },
                 'dmin':{
-                    'background':'#ccc'
+                    'background':'coral' 
                 }
             },
 
             'backdropfilter':{
                 'dmaj':'none',
                 'dmin':'none'
+            },
+            'animation':{
+                //default animations are def-(rotate, buzz)
+                'name':'def-rotate',
+                'duration':'1s',
+                'delay':'',
+                'iteration-count':'',
+                'direction':'',
+                'timing-function':'',
+                'fill-mode':''
             }
         }
 
@@ -284,29 +294,60 @@ class MJ{
         }
     }
     //User setters funcitons
-    setDMAJBackground(color){
-        this.follow_classic_config['color']['dmaj']['background'] = color;
-        this.revBackground(0);
-    }
-    setDMINBackground(color){
-        this.follow_classic_config['color']['dmin']['background'] = color;
-        this.revBackground(1);
-    }
-    setBothBackground(color){
-        this.setDMAJBackground(color);
-        this.setDMINBackground(color);
-    }
-
     setDMAJDimension(height,width){
         this.follow_classic_config['dimension']['dmaj']['height'] = height;
         this.follow_classic_config['dimension']['dmaj']['width'] = width;
         this.revDimension(0);
     }
-
     setDMINDimension(height,width){
         this.follow_classic_config['dimension']['dmin']['height'] = height;
         this.follow_classic_config['dimension']['dmin']['width'] = width;
         this.revDimension(1);
+    }
+
+    //Universal Setters
+    setBackground(color,elem='both'){
+        switch (elem) {
+            case 'dmaj':
+                this.follow_classic_config['color']['dmaj']['background'] = color;
+                this.revBackground(0);
+                break;
+            case 'dmin':
+                this.follow_classic_config['color']['dmin']['background'] = color;
+                this.revBackground(1);
+                break;
+            
+            default:
+                this.follow_classic_config['color']['dmaj']['background'] = color;
+                this.follow_classic_config['color']['dmin']['background'] = color;
+                this.revBackground(-1);
+                break;
+        }
+    }
+
+    setDimension(dimen , elem='both'){
+        //dimen = {height , width}
+        switch (elem) {
+            case 'dmaj':
+                this.follow_classic_config['dimension']['dmaj']['height'] = dimen[0];
+                this.follow_classic_config['dimension']['dmaj']['width'] = dimen[1];
+                this.revDimension(0);
+                break;
+        
+            case 'dmin':
+                this.follow_classic_config['dimension']['dmin']['height'] = dimen[0];
+                this.follow_classic_config['dimension']['dmin']['width'] = dimen[1];
+                this.revDimension(1);
+                break;
+        
+            default:
+                this.follow_classic_config['dimension']['dmaj']['height'] = dimen[0];
+                this.follow_classic_config['dimension']['dmaj']['width'] = dimen[1];
+                this.follow_classic_config['dimension']['dmin']['height'] = dimen[0];
+                this.follow_classic_config['dimension']['dmin']['width'] = dimen[1];
+                this.revDimension();
+                break;
+        }
     }
 }
 
@@ -315,64 +356,6 @@ class MJ{
 
 
 
-m = new MJ();
-m.default();
-
-document.addEventListener('mousemove',function(event){
-    m.moveDss(event);
-});
 
 
 
-
-// User will program like this...
-
-document.getElementsByClassName('def-sec')[0].addEventListener('mouseenter',function(){
-
-    m.follow_classic_config['border']['dmaj']['color'] = 'blue';
-    
-    
-    m.revBorder();
-    m.revBackground();
-    m.setDMINBackground('#111');
-    m.setDMINDimension(10,10);
-    m.setDMAJDimension(100,100);
-    console.log("Wtf");
-});
-
-document.getElementsByClassName('def-sec')[1].addEventListener('mouseenter',function(){
-
-    m.follow_classic_config['border']['dmaj']['color'] = 'green';
-    
-    
-    m.revBorder();
-    m.revBackground();
-    m.setDMINBackground('red');
-    m.setDMINDimension(10,10);
-    m.setDMAJDimension(100,100);
-    console.log("Wtf");
-});
-document.getElementsByClassName('def-sec')[3].addEventListener('mouseenter',function(){
-
-    m.follow_classic_config['border']['dmaj']['color'] = 'red';
-    
-    
-    m.revBorder();
-    m.revBackground();
-    m.setDMINBackground('purple');
-    m.setDMINDimension(10,10);
-    m.setDMAJDimension(100,100);
-    console.log("Wtf");
-});
-document.getElementsByClassName('def-sec')[4].addEventListener('mouseenter',function(){
-
-    m.follow_classic_config['border']['dmaj']['color'] = 'pink';
-    
-    
-    m.revBorder();
-    m.revBackground();
-    m.setDMINBackground('teal');
-    m.setDMINDimension(10,10);
-    m.setDMAJDimension(100,100);
-    console.log("Wtf");
-});
