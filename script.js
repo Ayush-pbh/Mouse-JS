@@ -1,34 +1,36 @@
 m = new MJ();
-m.refreshFollow();
+m.lol();
 
 document.addEventListener('mousemove',function(event){
-    m.moveDss(event);
-    
+    // Engine to move along with.
+    m.movementEngine(event)
+    console.log(event)
 });
 
+document.getElementsByClassName('def-sec')[4].addEventListener('mouseenter',function(){
+    // 
+    m.drawClassic();
+})
+document.getElementsByClassName('def-sec')[4].addEventListener('mouseleave',function(){
+    // 
+    m.undrawClassic();
+})
 
-// User will program like this...
+document.getElementsByClassName('def-sec')[3].addEventListener('mouseenter',function(){
+    // 
+    m.drawImage('images/1.jpg');
+})
+document.getElementsByClassName('def-sec')[3].addEventListener('mouseleave',function(){
+    // 
+    m.undrawImage();
+})
 
-document.getElementsByClassName('def-sec')[0].addEventListener('mouseenter',function(){
-    m.setBackground('red','dmaj');
-    m.setBackground('#111','dmin');    
-    m.setDimension([150,150],'dmaj');
-    m.setDimension([50,50],'dmin');
-    m.addClass('translucent');
-});
-document.getElementsByClassName('def-sec')[1].addEventListener('mouseenter',function(){
-    m.setBackground('seagreen','dmaj');
-    m.setBackground('yellow','dmin');
-    m.setDimension([100,100],'dmaj');
-    m.setDimension([10,10],'dmin');    
-    m.removeClass('translucent');
-});
 
-document.getElementsByClassName('def-sec')[2].addEventListener('mouseenter',function(){
-    m.config['follow']['type']['classic'] = false;
-    m.refreshFollow()
-});
-document.getElementsByClassName('def-sec')[2].addEventListener('mouseleave',function(){
-    m.config['follow']['type']['classic'] = true;
-    m.refreshFollow()
-});
+document.getElementsByClassName('def-sec')[5].addEventListener('mouseenter',function(){
+    // 
+    m.drawImage('images/4.jpg');
+})
+document.getElementsByClassName('def-sec')[5].addEventListener('mouseleave',function(){
+    // 
+    m.undrawImage();
+})
